@@ -8,11 +8,9 @@ import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
-import com.launchpad.test.entities.Port;
-import com.launchpad.test.entities.Service;
-import com.launchpad.test.entities.Volume;
 import com.launchpad.test.enums.DockerContainerStatusEnum;
-import org.springframework.stereotype.Component;
+import com.launchpad.test.models.ContainerServiceModel;
+import com.launchpad.test.models.ServiceModel;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -47,16 +45,20 @@ public class DockerDeploymentService implements DeploymentService {
     }
 
     @Override
-    public String createService(Service service, Port port, Volume volume) {
-        CreateContainerResponse containerResponse = this.dockerClient.createContainerCmd(service.getServiceImage())
+    public String createService(ServiceModel service) {
+        if (!(service instanceof ContainerServiceModel containerService)) {
+            throw new IllegalArgumentException("Invalid service model provided.");
+        }
+
+        CreateContainerResponse containerResponse = this.dockerClient.createContainerCmd(containerService.getServiceImage())
                 .withHostConfig(HostConfig.newHostConfig()
-                        .withBinds(new Bind(volume.getVolumeSource(), new com.github.dockerjava.api.model.Volume(volume.getVolumeDestination()), AccessMode.rw))
+                        .withBinds(new Bind(containerService.getVolumeSource(), new Volume(containerService.getVolumeDestination()), AccessMode.rw))
                         .withPortBindings(new PortBinding(
-                                Ports.Binding.bindPort(port.getPrivatePort()),
-                                ExposedPort.tcp(port.getPublicPort())
+                                Ports.Binding.bindPort(containerService.getPrivatePort()),
+                                ExposedPort.tcp(containerService.getPublicPort())
                         )))
-                .withName(service.getServiceName())
-                .withEnv(List.of())
+                .withName(containerService.getServiceName())
+                .withEnv(containerService.getEnv())
                 .exec();
         return containerResponse.getId();
     }
@@ -98,6 +100,6 @@ public class DockerDeploymentService implements DeploymentService {
 
     @Override
     public void removeService(String id) {
-
+        this.dockerClient.removeContainerCmd(id).exec();
     }
 }

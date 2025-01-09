@@ -1,9 +1,12 @@
 package com.launchpad.test.models;
 
+import java.util.List;
+
 public class ServiceModel {
     private String serviceName;
     private String serviceImage;
     private String serviceDescription;
+    private List<String> env;
 
     public ServiceModel(String serviceName, String serviceImage, String serviceDescription) {
         this.serviceName = serviceName;
@@ -21,5 +24,9 @@ public class ServiceModel {
 
     public String getServiceDescription() {
         return serviceDescription;
+    }
+
+    public List<String> getEnv() {
+        return env;
     }
 }
