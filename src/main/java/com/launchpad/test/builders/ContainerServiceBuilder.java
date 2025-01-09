@@ -1,4 +1,4 @@
-package com.launchpad.test.builder;
+package com.launchpad.test.builders;
 
 import com.launchpad.test.models.ContainerServiceModel;
 
