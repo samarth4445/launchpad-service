@@ -81,7 +81,7 @@ public class Service {
         return ports;
     }
 
-    public void setPorts(Port port) {
+    public void addPort(Port port) {
         this.ports.add(port);
     }
 }

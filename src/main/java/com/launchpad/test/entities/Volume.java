@@ -1,12 +1,17 @@
 package com.launchpad.test.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name="volume")
 public class Volume {
+
     @Id
-    @Column(name="volume_name", insertable = true, updatable = false, unique = true, nullable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name="volume_name", updatable = false, nullable = false, unique = true)
     private String volumeName;
 
     @Column(name="volume_source", nullable = false)
@@ -21,7 +26,7 @@ public class Volume {
 
     public Volume(){}
 
-    public Volume(String volumeName, String volumeSource, String volumeDestination) {
+    public Volume(String volumeSource, String volumeDestination) {
         this.volumeName = volumeName;
         this.volumeSource = volumeSource;
         this.volumeDestination = volumeDestination;

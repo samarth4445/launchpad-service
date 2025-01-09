@@ -3,6 +3,7 @@ package com.launchpad.test.models;
 import java.util.List;
 
 public class ServiceModel {
+    private String id;
     private String serviceName;
     private String serviceImage;
     private String serviceDescription;
@@ -28,5 +29,13 @@ public class ServiceModel {
 
     public List<String> getEnv() {
         return env;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

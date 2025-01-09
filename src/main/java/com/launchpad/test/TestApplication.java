@@ -28,8 +28,7 @@ public class TestApplication {
         Service service = new Service("django-app", "ubuntu", "ubuntu-linux-x86_64");
         service.setId("some-id-by-docker-13");
         serviceDAO.save(service);
-        Volume volume = new Volume("django-volume",
-                                  "/home/samarth/",
+        Volume volume = new Volume("/home/samarth/",
                                "/home/ubuntu/codes");
         volume.setService(service);
         volumeDAO.save(volume);

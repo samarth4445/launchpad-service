@@ -11,6 +11,7 @@ import com.github.dockerjava.transport.DockerHttpClient;
 import com.launchpad.test.enums.DockerContainerStatusEnum;
 import com.launchpad.test.models.ContainerServiceModel;
 import com.launchpad.test.models.ServiceModel;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -45,7 +46,7 @@ public class DockerDeploymentService implements DeploymentService {
     }
 
     @Override
-    public String createService(ServiceModel service) {
+    public ServiceModel createService(ServiceModel service) {
         if (!(service instanceof ContainerServiceModel containerService)) {
             throw new IllegalArgumentException("Invalid service model provided.");
         }
@@ -60,7 +61,8 @@ public class DockerDeploymentService implements DeploymentService {
                 .withName(containerService.getServiceName())
                 .withEnv(containerService.getEnv())
                 .exec();
-        return containerResponse.getId();
+        containerService.setId(containerResponse.getId());
+        return containerService;
     }
 
     @Override

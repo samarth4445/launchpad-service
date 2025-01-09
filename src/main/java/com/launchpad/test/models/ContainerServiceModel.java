@@ -2,6 +2,7 @@ package com.launchpad.test.models;
 
 public class ContainerServiceModel extends ServiceModel {
     private String status;
+    private String volumeName;
     private String volumeSource;
     private String volumeDestination;
     private int privatePort;
@@ -36,5 +37,13 @@ public class ContainerServiceModel extends ServiceModel {
 
     public int getPublicPort() {
         return publicPort;
+    }
+
+    public String getVolumeName() {
+        return volumeName;
+    }
+
+    public void setVolumeName(String volumeName) {
+        this.volumeName = volumeName;
     }
 }
