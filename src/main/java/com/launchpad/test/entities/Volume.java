@@ -6,11 +6,7 @@ import jakarta.persistence.*;
 @Table(name="volume")
 public class Volume {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
-    @Column(name="id", insertable = true, updatable = false, unique = true, nullable = false)
-    private String id;
-
-    @Column(name="volume_name", nullable = false)
+    @Column(name="volume_name", insertable = true, updatable = false, unique = true, nullable = false)
     private String volumeName;
 
     @Column(name="volume_source", nullable = false)
@@ -61,13 +57,5 @@ public class Volume {
 
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

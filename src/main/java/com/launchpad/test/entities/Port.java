@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Port {
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
     @Column(name="id", insertable = true, updatable = false, unique = true, nullable = false)
     private String id;
 

@@ -2,13 +2,13 @@ package com.launchpad.test.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="service")
 public class Service {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", insertable = true, updatable = false, unique = true, nullable = false)
     private String id;
 
@@ -33,6 +33,8 @@ public class Service {
         this.serviceName = serviceName;
         this.serviceImage = serviceImage;
         this.description = description;
+        this.ports = new ArrayList<>();
+        this.volumes = new ArrayList<>();
     }
 
     public String getId() {
@@ -68,18 +70,18 @@ public class Service {
     }
 
     public List<Volume> getVolumes() {
-        return volumes;
+        return this.volumes;
     }
 
-    public void setVolumes(List<Volume> volumes) {
-        this.volumes = volumes;
+    public void addVolume(Volume volume) {
+        this.volumes.add(volume);
     }
 
     public List<Port> getPorts() {
         return ports;
     }
 
-    public void setPorts(List<Port> ports) {
-        this.ports = ports;
+    public void setPorts(Port port) {
+        this.ports.add(port);
     }
 }
