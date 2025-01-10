@@ -30,6 +30,10 @@ public class Service {
     @OneToMany(mappedBy = "service", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Port> ports;
 
+    @ManyToOne
+    @JoinColumn(name="microservice_id", nullable = false)
+    private Microservice microservice;
+
     public Service(){}
 
     public Service(String serviceName, String serviceImage, String description) {
