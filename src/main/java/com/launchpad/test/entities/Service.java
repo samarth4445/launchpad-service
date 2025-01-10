@@ -87,4 +87,15 @@ public class Service {
     public void addPort(Port port) {
         this.ports.add(port);
     }
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "id='" + id + '\'' +
+                ", serviceName='" + serviceName + '\'' +
+                ", serviceImage='" + serviceImage + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

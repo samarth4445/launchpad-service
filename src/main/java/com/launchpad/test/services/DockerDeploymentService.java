@@ -72,9 +72,15 @@ public class DockerDeploymentService implements DeploymentService {
 
     @Override
     public List<String> listServiceIds() throws URISyntaxException, IOException, InterruptedException {
-        List<Container> containers = this.dockerClient.listContainersCmd().exec();
-        ArrayList<String> services = new ArrayList<>();
+        List<Container> containers = this.dockerClient.listContainersCmd()
+                .withStatusFilter(new ArrayList<>(
+                        Arrays.asList(DockerContainerStatusEnum.created.toString(),
+                                DockerContainerStatusEnum.exited.toString(),
+                                DockerContainerStatusEnum.running.toString())
+                ))
+                .exec();
 
+        ArrayList<String> services = new ArrayList<>();
         for(Container container: containers){
             services.add(container.getId());
         }

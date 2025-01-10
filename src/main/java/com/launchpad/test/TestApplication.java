@@ -44,7 +44,9 @@ public class TestApplication {
                     .setEnv(List.of("BUDDY=LOL"))
                     .build();
 
-            adapter.createService(serviceModel);
+            Service service = adapter.createService(serviceModel);
+            System.out.println(service.getId());
+            System.out.println(adapter.listServices());
         };
     }
 }
