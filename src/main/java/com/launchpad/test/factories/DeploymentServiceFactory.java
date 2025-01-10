@@ -1,7 +1,7 @@
 package com.launchpad.test.factories;
 
-import com.launchpad.test.services.DeploymentService;
-import com.launchpad.test.services.DockerDeploymentService;
+import com.launchpad.test.services.deployment.DeploymentService;
+import com.launchpad.test.services.deployment.DockerDeploymentService;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 
 public class DeploymentServiceFactory {

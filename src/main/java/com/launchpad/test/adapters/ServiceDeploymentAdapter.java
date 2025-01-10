@@ -5,7 +5,7 @@ import com.launchpad.test.entities.Service;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import com.launchpad.test.factories.DeploymentServiceFactory;
 import com.launchpad.test.models.ServiceModel;
-import com.launchpad.test.services.DeploymentService;
+import com.launchpad.test.services.deployment.DeploymentService;
 import com.launchpad.test.strategies.DockerServiceDeploymentAdapterStrategy;
 import com.launchpad.test.strategies.ServiceDeploymentAdapterStrategy;
 import org.springframework.context.ApplicationContext;

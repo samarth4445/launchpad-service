@@ -10,7 +10,7 @@ import com.launchpad.test.enums.DeploymentServiceEnum;
 import com.launchpad.test.factories.DeploymentServiceFactory;
 import com.launchpad.test.models.ContainerServiceModel;
 import com.launchpad.test.models.ServiceModel;
-import com.launchpad.test.services.DeploymentService;
+import com.launchpad.test.services.deployment.DeploymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

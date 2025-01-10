@@ -1,4 +1,4 @@
-package com.launchpad.test.services;
+package com.launchpad.test.services.deployment;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
@@ -11,7 +11,6 @@ import com.github.dockerjava.transport.DockerHttpClient;
 import com.launchpad.test.enums.DockerContainerStatusEnum;
 import com.launchpad.test.models.ContainerServiceModel;
 import com.launchpad.test.models.ServiceModel;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

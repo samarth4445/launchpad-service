@@ -8,6 +8,7 @@ import com.launchpad.test.entities.Service;
 import com.launchpad.test.entities.Volume;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import com.launchpad.test.models.ServiceModel;
+import com.launchpad.test.services.up.UpService;
 import com.launchpad.test.strategies.ServiceDeploymentAdapterStrategy;
 import jakarta.ws.rs.core.Application;
 import org.springframework.boot.CommandLineRunner;
@@ -45,8 +46,6 @@ public class TestApplication {
                     .build();
 
             Service service = adapter.createService(serviceModel);
-            System.out.println(service.getId());
-            System.out.println(adapter.listServices());
         };
     }
 }

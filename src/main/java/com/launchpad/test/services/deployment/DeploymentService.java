@@ -1,8 +1,5 @@
-package com.launchpad.test.services;
+package com.launchpad.test.services.deployment;
 
-import com.launchpad.test.entities.Port;
-import com.launchpad.test.entities.Service;
-import com.launchpad.test.entities.Volume;
 import com.launchpad.test.models.ServiceModel;
 
 import java.io.IOException;
