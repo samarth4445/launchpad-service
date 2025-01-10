@@ -46,6 +46,8 @@ public class TestApplication {
                     .build();
 
             Service service = adapter.createService(serviceModel);
+            UpService up = ctx.getBean(UpService.class);
+            up.setServiceDeploymentAdapter(DeploymentServiceEnum.DOCKER);
         };
     }
 }

@@ -19,7 +19,7 @@ public class UpService {
         this.applicationContext = applicationContext;
     }
 
-    private void setServiceDeploymentAdapter(DeploymentServiceEnum serviceType){
+    public void setServiceDeploymentAdapter(DeploymentServiceEnum serviceType){
         this.serviceDeploymentAdapter = new ServiceDeploymentAdapter(serviceType, this.applicationContext);
     }
 
