@@ -4,7 +4,6 @@ package com.launchpad.test.services.up;
 import com.launchpad.test.adapters.ServiceDeploymentAdapter;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

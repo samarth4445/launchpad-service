@@ -60,11 +60,11 @@ public class ServiceDeploymentAdapter {
         return deploymentService.getServiceIdFromName(name);
     }
 
-    void stopService(String id) {
+    public void stopService(String id) {
         deploymentService.stopService(id);
     }
 
-    void removeService(String id) {
+    public void removeService(String id) {
         deploymentService.removeService(id);
     }
 }

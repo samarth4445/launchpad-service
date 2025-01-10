@@ -9,13 +9,10 @@ import com.launchpad.test.entities.Volume;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import com.launchpad.test.models.ServiceModel;
 import com.launchpad.test.services.up.UpService;
-import com.launchpad.test.strategies.ServiceDeploymentAdapterStrategy;
-import jakarta.ws.rs.core.Application;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
@@ -31,8 +28,7 @@ public class TestApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return runner -> {
-            ServiceDeploymentAdapter adapter = ctx.getBean(ServiceDeploymentAdapter.class);
-            adapter.setServiceType(DeploymentServiceEnum.DOCKER);
+            ServiceDeploymentAdapter adapter = getAdapter(DeploymentServiceEnum.DOCKER, ctx);
             ContainerServiceBuilder builder = new ContainerServiceBuilder();
             ServiceModel serviceModel = builder.setServiceName("django-app")
                     .setServiceImage("ubuntu")
@@ -49,5 +45,11 @@ public class TestApplication {
             UpService up = ctx.getBean(UpService.class);
             up.setServiceType(DeploymentServiceEnum.DOCKER);
         };
+    }
+
+    public ServiceDeploymentAdapter getAdapter(DeploymentServiceEnum serviceType, ApplicationContext ctx) {
+        ServiceDeploymentAdapter adapter = ctx.getBean(ServiceDeploymentAdapter.class);
+        adapter.setServiceType(DeploymentServiceEnum.DOCKER);
+        return adapter;
     }
 }
