@@ -26,7 +26,7 @@ public class Volume {
 
     public Volume(){}
 
-    public Volume(String volumeSource, String volumeDestination) {
+    public Volume(String volumeName, String volumeSource, String volumeDestination) {
         this.volumeName = volumeName;
         this.volumeSource = volumeSource;
         this.volumeDestination = volumeDestination;

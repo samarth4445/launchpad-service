@@ -2,6 +2,7 @@ package com.launchpad.test.dao.port;
 
 import com.launchpad.test.entities.Port;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,6 +15,7 @@ public class PortDAOImpl implements PortDAO {
     }
 
     @Override
+    @Transactional
     public void save(Port port) {
         entityManager.persist(port);
     }

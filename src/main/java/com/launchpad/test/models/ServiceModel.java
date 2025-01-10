@@ -9,10 +9,11 @@ public class ServiceModel {
     private String serviceDescription;
     private List<String> env;
 
-    public ServiceModel(String serviceName, String serviceImage, String serviceDescription) {
+    public ServiceModel(String serviceName, String serviceImage, String serviceDescription, List<String> env) {
         this.serviceName = serviceName;
         this.serviceImage = serviceImage;
         this.serviceDescription = serviceDescription;
+        this.env = env;
     }
 
     public String getServiceName() {

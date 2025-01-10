@@ -92,7 +92,7 @@ public class DockerDeploymentService implements DeploymentService {
                 ))
                 .withNameFilter(Collections.singleton(name))
                 .exec();
-        return containers.getFirst().getId();
+        return containers.get(0).getId();
     }
 
     @Override

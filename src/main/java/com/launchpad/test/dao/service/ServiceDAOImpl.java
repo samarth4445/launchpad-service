@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ServiceDAOImpl implements ServiceDAO {
 
@@ -37,5 +39,12 @@ public class ServiceDAOImpl implements ServiceDAO {
                 .setParameter("id", id)
                 .getSingleResult();
 
+    }
+
+    @Override
+    public List<Service> findByIds(List<String> ids) {
+        return entityManager.createQuery("SELECT s FROM Service s WHERE s.id IN :ids", Service.class)
+                .setParameter("ids", ids)
+                .getResultList();
     }
 }

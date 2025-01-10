@@ -2,6 +2,8 @@ package com.launchpad.test.builders;
 
 import com.launchpad.test.models.ContainerServiceModel;
 
+import java.util.List;
+
 public class ContainerServiceBuilder {
     private String serviceName;
     private String serviceImage;
@@ -11,6 +13,7 @@ public class ContainerServiceBuilder {
     private String volumeDestination;
     private int privatePort;
     private int publicPort;
+    private List<String> env;
 
     public ContainerServiceBuilder setServiceName(String serviceName) {
         this.serviceName = serviceName;
@@ -52,9 +55,14 @@ public class ContainerServiceBuilder {
         return this;
     }
 
-    ContainerServiceModel build(){
+    public ContainerServiceBuilder setEnv(List<String> env){
+        this.env = env;
+        return this;
+    }
+
+    public ContainerServiceModel build(){
         return new ContainerServiceModel(serviceName, serviceImage, serviceDescription,
                                          status, volumeSource, volumeDestination,
-                                         privatePort, publicPort);
+                                         privatePort, publicPort, env);
     }
 }

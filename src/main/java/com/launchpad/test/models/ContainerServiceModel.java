@@ -1,5 +1,7 @@
 package com.launchpad.test.models;
 
+import java.util.List;
+
 public class ContainerServiceModel extends ServiceModel {
     private String status;
     private String volumeName;
@@ -10,8 +12,8 @@ public class ContainerServiceModel extends ServiceModel {
 
     public ContainerServiceModel(String serviceName, String serviceImage, String serviceDescription,
                                  String status, String volumeSource, String volumeDestination,
-                                 int privatePort, int publicPort) {
-        super(serviceName, serviceImage, serviceDescription);
+                                 int privatePort, int publicPort, List<String> env) {
+        super(serviceName, serviceImage, serviceDescription, env);
         this.status = status;
         this.volumeSource = volumeSource;
         this.volumeDestination = volumeDestination;

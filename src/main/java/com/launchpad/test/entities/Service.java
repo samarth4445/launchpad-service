@@ -21,6 +21,9 @@ public class Service {
     @Column(name="description", nullable = true)
     private String description;
 
+    @Column(name="status", nullable = true)
+    private String status;
+
     @OneToMany(mappedBy = "service", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Volume> volumes;
 

@@ -1,13 +1,24 @@
 package com.launchpad.test;
 
+import com.launchpad.test.adapters.ServiceDeploymentAdapter;
+import com.launchpad.test.builders.ContainerServiceBuilder;
 import com.launchpad.test.dao.service.ServiceDAO;
 import com.launchpad.test.dao.volume.VolumeDAO;
 import com.launchpad.test.entities.Service;
 import com.launchpad.test.entities.Volume;
+import com.launchpad.test.enums.DeploymentServiceEnum;
+import com.launchpad.test.models.ServiceModel;
+import com.launchpad.test.strategies.ServiceDeploymentAdapterStrategy;
+import jakarta.ws.rs.core.Application;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class TestApplication {
@@ -17,27 +28,23 @@ public class TestApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(ServiceDAO serviceDAO, VolumeDAO volumeDAO) {
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return runner -> {
-            createService(serviceDAO, volumeDAO);
-            findService(serviceDAO);
+            ServiceDeploymentAdapter adapter = new ServiceDeploymentAdapter(DeploymentServiceEnum.DOCKER,
+                                                                            ctx);
+            ContainerServiceBuilder builder = new ContainerServiceBuilder();
+            ServiceModel serviceModel = builder.setServiceName("django-app")
+                    .setServiceImage("ubuntu")
+                    .setServiceDescription("ubuntu-linux-x86_64")
+                    .setPrivatePort(8080)
+                    .setPublicPort(8080)
+                    .setVolumeSource("/home/samarth/")
+                    .setVolumeDestination("/home/ubuntu/codes")
+                    .setStatus("")
+                    .setEnv(List.of("BUDDY=LOL"))
+                    .build();
+
+            adapter.createService(serviceModel);
         };
-    }
-
-    private void createService(ServiceDAO serviceDAO, VolumeDAO volumeDAO) {
-        Service service = new Service("django-app", "ubuntu", "ubuntu-linux-x86_64");
-        service.setId("some-id-by-docker-13");
-        serviceDAO.save(service);
-        Volume volume = new Volume("/home/samarth/",
-                               "/home/ubuntu/codes");
-        volume.setService(service);
-        volumeDAO.save(volume);
-        service.addVolume(volume);
-        serviceDAO.update(service);
-    }
-
-    private void findService(ServiceDAO serviceDAO) {
-        Service service = serviceDAO.findServiceWithVolumes("some-id-by-docker-13");
-        System.out.println(service.getVolumes().get(0).getVolumeDestination());
     }
 }
