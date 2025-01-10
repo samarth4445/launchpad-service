@@ -102,9 +102,7 @@ public class DockerDeploymentService implements DeploymentService {
     }
 
     @Override
-    public void stopService(String id) {
-        this.dockerClient.stopContainerCmd(id).exec();
-    }
+    public void stopService(String id) { this.dockerClient.stopContainerCmd(id).exec(); }
 
     @Override
     public void removeService(String id) {

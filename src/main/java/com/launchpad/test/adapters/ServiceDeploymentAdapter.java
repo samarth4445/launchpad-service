@@ -45,4 +45,20 @@ public class ServiceDeploymentAdapter {
         List<String> serviceIds = deploymentService.listServiceIds();
         return serviceDAO.findByIds(serviceIds);
     }
+
+    public Service getServiceFromId(String id) {
+        return serviceDAO.findById(id);
+    }
+
+    public String getServiceIdFromName(String name) {
+        return deploymentService.getServiceIdFromName(name);
+    }
+
+    void stopService(String id) {
+        deploymentService.stopService(id);
+    }
+
+    void removeService(String id) {
+        deploymentService.removeService(id);
+    }
 }
