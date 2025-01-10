@@ -31,8 +31,8 @@ public class TestApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return runner -> {
-            ServiceDeploymentAdapter adapter = new ServiceDeploymentAdapter(DeploymentServiceEnum.DOCKER,
-                                                                            ctx);
+            ServiceDeploymentAdapter adapter = ctx.getBean(ServiceDeploymentAdapter.class);
+            adapter.setServiceType(DeploymentServiceEnum.DOCKER);
             ContainerServiceBuilder builder = new ContainerServiceBuilder();
             ServiceModel serviceModel = builder.setServiceName("django-app")
                     .setServiceImage("ubuntu")
@@ -47,7 +47,7 @@ public class TestApplication {
 
             Service service = adapter.createService(serviceModel);
             UpService up = ctx.getBean(UpService.class);
-            up.setServiceDeploymentAdapter(DeploymentServiceEnum.DOCKER);
+            up.setServiceType(DeploymentServiceEnum.DOCKER);
         };
     }
 }

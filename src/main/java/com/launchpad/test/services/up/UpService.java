@@ -12,15 +12,14 @@ import java.util.*;
 @Component
 public class UpService {
     private ServiceDeploymentAdapter serviceDeploymentAdapter;
-    private ApplicationContext applicationContext;
 
     @Autowired
-    public UpService(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public UpService(ServiceDeploymentAdapter serviceDeploymentAdapter) {
+        this.serviceDeploymentAdapter = serviceDeploymentAdapter;
     }
 
-    public void setServiceDeploymentAdapter(DeploymentServiceEnum serviceType){
-        this.serviceDeploymentAdapter = new ServiceDeploymentAdapter(serviceType, this.applicationContext);
+    public void setServiceType(DeploymentServiceEnum serviceType){
+        this.serviceDeploymentAdapter.setServiceType(serviceType);
     }
 
     private static void DFS(String node, TreeMap<String, List<String>> serviceDependencyGraph,

@@ -8,6 +8,7 @@ import com.launchpad.test.models.ServiceModel;
 import com.launchpad.test.services.deployment.DeploymentService;
 import com.launchpad.test.strategies.DockerServiceDeploymentAdapterStrategy;
 import com.launchpad.test.strategies.ServiceDeploymentAdapterStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
@@ -16,20 +17,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@org.springframework.stereotype.Service
 public class ServiceDeploymentAdapter {
     private DeploymentService deploymentService;
     private DeploymentServiceEnum serviceType;
     private ServiceDAO serviceDAO;
     private Map<DeploymentServiceEnum, Class<? extends ServiceDeploymentAdapterStrategy>> strategies = new HashMap<>();
     private ServiceDeploymentAdapterStrategy strategy;
+    private ApplicationContext applicationContext;
 
-    public ServiceDeploymentAdapter(DeploymentServiceEnum serviceType,
-                                    ApplicationContext applicationContext) {
+    @Autowired
+    public ServiceDeploymentAdapter(ApplicationContext applicationContext, ServiceDAO serviceDAO) {
+        this.applicationContext = applicationContext;
+        this.serviceDAO = serviceDAO;
+        strategies.put(DeploymentServiceEnum.DOCKER, DockerServiceDeploymentAdapterStrategy.class);
+    }
+
+    public void setServiceType(DeploymentServiceEnum serviceType) {
         this.serviceType = serviceType;
         this.deploymentService = DeploymentServiceFactory.getDeploymentService(serviceType);
-        this.serviceDAO = applicationContext.getBean(ServiceDAO.class);
-
-        strategies.put(DeploymentServiceEnum.DOCKER, DockerServiceDeploymentAdapterStrategy.class);
         this.strategy = applicationContext.getBean(strategies.get(serviceType));
     }
 
