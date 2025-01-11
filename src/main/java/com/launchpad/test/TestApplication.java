@@ -7,6 +7,7 @@ import com.launchpad.test.dao.volume.VolumeDAO;
 import com.launchpad.test.entities.Service;
 import com.launchpad.test.entities.Volume;
 import com.launchpad.test.enums.DeploymentServiceEnum;
+import com.launchpad.test.factories.ServiceDeploymentAdapterFactory;
 import com.launchpad.test.models.ServiceModel;
 import com.launchpad.test.services.up.UpService;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +29,8 @@ public class TestApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return runner -> {
-            ServiceDeploymentAdapter adapter = getAdapter(DeploymentServiceEnum.DOCKER, ctx);
+            ServiceDeploymentAdapterFactory factory = new ServiceDeploymentAdapterFactory(ctx);
+            ServiceDeploymentAdapter adapter = factory.getServiceDeploymentAdapter(DeploymentServiceEnum.DOCKER);
             ContainerServiceBuilder builder = new ContainerServiceBuilder();
             ServiceModel serviceModel = builder.setServiceName("django-app")
                     .setServiceImage("ubuntu")
@@ -45,11 +47,5 @@ public class TestApplication {
             UpService up = ctx.getBean(UpService.class);
             up.setServiceType(DeploymentServiceEnum.DOCKER);
         };
-    }
-
-    public ServiceDeploymentAdapter getAdapter(DeploymentServiceEnum serviceType, ApplicationContext ctx) {
-        ServiceDeploymentAdapter adapter = ctx.getBean(ServiceDeploymentAdapter.class);
-        adapter.setServiceType(DeploymentServiceEnum.DOCKER);
-        return adapter;
     }
 }
