@@ -1,6 +1,7 @@
 package com.launchpad.test.adapters;
 
 import com.launchpad.test.dao.service.ServiceDAO;
+import com.launchpad.test.entities.Microservice;
 import com.launchpad.test.entities.Service;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import com.launchpad.test.factories.DeploymentServiceFactory;
@@ -39,8 +40,8 @@ public class ServiceDeploymentAdapter {
         this.strategy = applicationContext.getBean(strategies.get(serviceType));
     }
 
-    public Service createService(ServiceModel serviceModel) {
-        return this.strategy.createService(serviceModel);
+    public Service createService(ServiceModel serviceModel, Microservice microservice) {
+        return this.strategy.createService(serviceModel, microservice);
     }
 
     public void runService(String id) {

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name="service")
-public class Service {
+public class Service implements Comparable<Service> {
     @Id
     @Column(name="id", insertable = true, updatable = false, unique = true, nullable = false)
     private String id;
@@ -40,7 +40,7 @@ public class Service {
             joinColumns = @JoinColumn(name = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "dependency_id")
     )
-    private List<Service> dependencies = new ArrayList<>();
+    private List<Service> dependencies;
 
     public Service(){}
 
@@ -50,6 +50,7 @@ public class Service {
         this.description = description;
         this.ports = new ArrayList<>();
         this.volumes = new ArrayList<>();
+        this.dependencies = new ArrayList<>();
     }
 
     public String getId() {
@@ -104,6 +105,14 @@ public class Service {
         this.dependencies.add(service);
     }
 
+    public void setMicroservice(Microservice microservice) {
+        this.microservice = microservice;
+    }
+
+    public List<Service> getDependencies() {
+        return dependencies;
+    }
+
     @Override
     public String toString() {
         return "Service{" +
@@ -113,5 +122,10 @@ public class Service {
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Service service) {
+        return this.id.compareTo(service.id);
     }
 }

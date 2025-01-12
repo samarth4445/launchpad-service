@@ -3,6 +3,7 @@ package com.launchpad.test.strategies;
 import com.launchpad.test.dao.port.PortDAO;
 import com.launchpad.test.dao.service.ServiceDAO;
 import com.launchpad.test.dao.volume.VolumeDAO;
+import com.launchpad.test.entities.Microservice;
 import com.launchpad.test.entities.Port;
 import com.launchpad.test.entities.Service;
 import com.launchpad.test.entities.Volume;
@@ -30,7 +31,7 @@ public class DockerServiceDeploymentAdapterStrategy implements ServiceDeployment
     }
 
     @Override
-    public Service createService(ServiceModel serviceModel) {
+    public Service createService(ServiceModel serviceModel, Microservice microservice) {
         if (!(serviceModel instanceof ContainerServiceModel containerServiceModel)) {
             throw new IllegalArgumentException("ServiceModel must be a ContainerServiceModel");
         }
@@ -41,7 +42,9 @@ public class DockerServiceDeploymentAdapterStrategy implements ServiceDeployment
                 serviceModel.getServiceDescription()
         );
         service.setId(serviceModel.getId());
+        service.setMicroservice(microservice);
         serviceDAO.save(service);
+        microservice.addService(service);
 
         handlePorts(service, containerServiceModel);
         handleVolumes(service, containerServiceModel);

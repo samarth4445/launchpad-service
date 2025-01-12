@@ -2,6 +2,7 @@ package com.launchpad.test.services.up;
 
 
 import com.launchpad.test.adapters.ServiceDeploymentAdapter;
+import com.launchpad.test.entities.Service;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,27 +22,27 @@ public class UpService {
         this.serviceDeploymentAdapter.setServiceType(serviceType);
     }
 
-    private static void DFS(String node, TreeMap<String, List<String>> serviceDependencyGraph,
-                            HashMap<String, Boolean> visited, Stack<String> stack) {
+    private static void DFS(Service node, TreeMap<Service, List<Service>> serviceDependencyGraph,
+                            HashMap<Service, Boolean> visited, Stack<Service> stack) {
         visited.put(node, true);
-        List<String> neighbors = serviceDependencyGraph.get(node);
+        List<Service> neighbors = serviceDependencyGraph.get(node);
         if (neighbors != null) {
-            for (String it : neighbors) {
+            for (Service it : neighbors) {
                 if (!visited.get(it)) DFS(it, serviceDependencyGraph, visited, stack);
             }
         }
         stack.push(node);
     }
 
-    private static List<String> topologicalSort(TreeMap<String, List<String>> serviceDependencyGraph) {
-        List<String> servicesInTopologicalOrder = new ArrayList<>();
-        Stack<String> stack = new Stack<>();
-        HashMap<String, Boolean> visited = new HashMap<>();
-        for (String node : serviceDependencyGraph.keySet()) {
+    private static List<Service> topologicalSort(TreeMap<Service, List<Service>> serviceDependencyGraph) {
+        List<Service> servicesInTopologicalOrder = new ArrayList<>();
+        Stack<Service> stack = new Stack<>();
+        HashMap<Service, Boolean> visited = new HashMap<>();
+        for (Service node : serviceDependencyGraph.keySet()) {
             visited.put(node, false);
         }
 
-        for (String node : serviceDependencyGraph.keySet()) {
+        for (Service node : serviceDependencyGraph.keySet()) {
             if (!visited.get(node)) {
                 DFS(node, serviceDependencyGraph, visited, stack);
             }
@@ -54,13 +55,13 @@ public class UpService {
         return servicesInTopologicalOrder;
     }
 
-    private static boolean cycleDetection(TreeMap<String, List<String>> serviceDependencyGraph,
-                                          HashMap<String, Integer> visited,
-                                          String node) {
+    private static boolean cycleDetection(TreeMap<Service, List<Service>> serviceDependencyGraph,
+                                          HashMap<Service, Integer> visited,
+                                          Service node) {
         visited.put(node, 2);
-        List<String> neighbors = serviceDependencyGraph.get(node);
+        List<Service> neighbors = serviceDependencyGraph.get(node);
         if (neighbors != null) {
-            for (String neighbor : neighbors) {
+            for (Service neighbor : neighbors) {
                 if (visited.get(neighbor) != null && visited.get(neighbor) == 2) {
                     return true;
                 }
@@ -76,13 +77,13 @@ public class UpService {
         return false;
     }
 
-    private static boolean isThereCircularDependency(TreeMap<String, List<String>> serviceDependencyGraph) {
-        HashMap<String, Integer> visited = new HashMap<>();
-        for (String node : serviceDependencyGraph.keySet()) {
+    private static boolean isThereCircularDependency(TreeMap<Service, List<Service>> serviceDependencyGraph) {
+        HashMap<Service, Integer> visited = new HashMap<>();
+        for (Service node : serviceDependencyGraph.keySet()) {
             visited.put(node, 1);
         }
 
-        for (String node : serviceDependencyGraph.keySet()) {
+        for (Service node : serviceDependencyGraph.keySet()) {
             if (visited.get(node) == 1) {
                 if (cycleDetection(serviceDependencyGraph, visited, node)) {
                     return true;
@@ -93,14 +94,14 @@ public class UpService {
         return false;
     }
 
-    public void runServices(TreeMap<String, List<String>> serviceDependencyGraph){
+    public void runServices(TreeMap<Service, List<Service>> serviceDependencyGraph){
         if(isThereCircularDependency(serviceDependencyGraph)){
             throw new IllegalArgumentException("Dependency graph has cycles.");
         }
 
-        List<String> servicesInTopologicalOrder = topologicalSort(serviceDependencyGraph);
-        for(String serviceId: servicesInTopologicalOrder){
-            this.serviceDeploymentAdapter.runService(serviceId);
+        List<Service> servicesInTopologicalOrder = topologicalSort(serviceDependencyGraph);
+        for(Service service: servicesInTopologicalOrder){
+            this.serviceDeploymentAdapter.runService(service.getId());
         }
     }
 }
