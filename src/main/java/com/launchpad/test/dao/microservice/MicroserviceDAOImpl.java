@@ -23,10 +23,16 @@ public class MicroserviceDAOImpl implements MicroserviceDAO {
     }
 
     @Override
-    public List<Service> getAllServices(String microserviceId) {
+    public List<Service> getAllServices(int microserviceId) {
         Microservice microservice = (Microservice) entityManager.createQuery("SELECT ms FROM Microservice ms LEFT JOIN FETCH ms.services WHERE ms.id=:microserviceId")
                                     .setParameter("microserviceId", microserviceId)
                                     .getSingleResult();
         return microservice.getServices();
+    }
+
+    @Transactional
+    @Override
+    public void update(Microservice microservice) {
+        this.entityManager.merge(microservice);
     }
 }

@@ -5,5 +5,5 @@ import com.launchpad.test.entities.Service;
 import com.launchpad.test.models.ServiceModel;
 
 public interface ServiceDeploymentAdapterStrategy{
-    Service createService(ServiceModel serviceModel, Microservice microservice);
+    Service createService(ServiceModel serviceModel);
 }

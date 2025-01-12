@@ -40,8 +40,8 @@ public class ServiceDeploymentAdapter {
         this.strategy = applicationContext.getBean(strategies.get(serviceType));
     }
 
-    public Service createService(ServiceModel serviceModel, Microservice microservice) {
-        return this.strategy.createService(serviceModel, microservice);
+    public Service createService(ServiceModel serviceModel) {
+        return this.strategy.createService(serviceModel);
     }
 
     public void runService(String id) {

@@ -9,6 +9,7 @@ import com.launchpad.test.entities.Volume;
 import com.launchpad.test.enums.DeploymentServiceEnum;
 import com.launchpad.test.factories.ServiceDeploymentAdapterFactory;
 import com.launchpad.test.models.ServiceModel;
+import com.launchpad.test.services.microservice.MicroserviceService;
 import com.launchpad.test.services.up.UpService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 @SpringBootApplication
@@ -28,8 +32,6 @@ public class TestApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx, MicroserviceDAO microserviceDAO) {
         return runner -> {
-            ServiceDeploymentAdapterFactory factory = new ServiceDeploymentAdapterFactory(ctx);
-            ServiceDeploymentAdapter adapter = factory.getServiceDeploymentAdapter(DeploymentServiceEnum.DOCKER);
             ContainerServiceBuilder builder = new ContainerServiceBuilder();
             Microservice microservice = new Microservice("myMicroservice");
             microserviceDAO.save(microservice);
@@ -55,26 +57,23 @@ public class TestApplication {
                     .setStatus("")
                     .setEnv(List.of("BUDDY=LOL"))
                     .build();
-            Service service = adapter.createService(serviceModel2, microservice);
-            Service service2 = adapter.createService(serviceModel, microservice);
 
-            service.addDependency(service2);
+            MicroserviceService microserviceService = ctx.getBean(MicroserviceService.class);
+            microserviceService.setService(DeploymentServiceEnum.DOCKER, microservice);
+            Service service = microserviceService.addService(serviceModel);
+            Service service2 = microserviceService.addService(serviceModel2);
 
-            UpService up = ctx.getBean(UpService.class);
-            up.setServiceType(DeploymentServiceEnum.DOCKER);
-
-            TreeMap<Service, List<Service>> dependencies = new TreeMap<>();
-            dependencies.put(service, service.getDependencies());
-            dependencies.put(service2, service2.getDependencies());
-
-            for (Map.Entry<Service, List<Service>> entry : dependencies.entrySet()) {
-                System.out.print(entry.getKey() + ": ");
-                for (Service dependency : entry.getValue()) {
-                    System.out.println(dependency);
-                }
-            }
-
-            up.runServices(dependencies);
+            microserviceService.addServiceDependency(service, service2);
+            microserviceService.serviceUp();
         };
+    }
+
+    public static List<String> readFileLines(String filePath) {
+        try {
+            return Files.readAllLines(Paths.get(filePath));
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading the file: " + e.getMessage());
+            return null;
+        }
     }
 }

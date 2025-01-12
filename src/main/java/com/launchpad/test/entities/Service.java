@@ -31,7 +31,7 @@ public class Service implements Comparable<Service> {
     private List<Port> ports;
 
     @ManyToOne
-    @JoinColumn(name="microservice_id", nullable = false)
+    @JoinColumn(name="microservice_id", nullable = true)
     private Microservice microservice;
 
     @ManyToMany
@@ -103,6 +103,10 @@ public class Service implements Comparable<Service> {
 
     public void addDependency(Service service) {
         this.dependencies.add(service);
+    }
+
+    public void removeDependency(Service service) {
+        this.dependencies.remove(service);
     }
 
     public void setMicroservice(Microservice microservice) {

@@ -31,7 +31,7 @@ public class DockerServiceDeploymentAdapterStrategy implements ServiceDeployment
     }
 
     @Override
-    public Service createService(ServiceModel serviceModel, Microservice microservice) {
+    public Service createService(ServiceModel serviceModel) {
         if (!(serviceModel instanceof ContainerServiceModel containerServiceModel)) {
             throw new IllegalArgumentException("ServiceModel must be a ContainerServiceModel");
         }
@@ -42,9 +42,7 @@ public class DockerServiceDeploymentAdapterStrategy implements ServiceDeployment
                 serviceModel.getServiceDescription()
         );
         service.setId(serviceModel.getId());
-        service.setMicroservice(microservice);
         serviceDAO.save(service);
-        microservice.addService(service);
 
         handlePorts(service, containerServiceModel);
         handleVolumes(service, containerServiceModel);

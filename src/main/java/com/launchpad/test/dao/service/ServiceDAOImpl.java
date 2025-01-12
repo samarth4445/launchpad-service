@@ -47,4 +47,9 @@ public class ServiceDAOImpl implements ServiceDAO {
                 .setParameter("ids", ids)
                 .getResultList();
     }
+
+    @Override
+    public void delete(Service service) {
+        entityManager.remove(service);
+    }
 }
