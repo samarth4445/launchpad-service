@@ -34,6 +34,14 @@ public class Service {
     @JoinColumn(name="microservice_id", nullable = false)
     private Microservice microservice;
 
+    @ManyToMany
+    @JoinTable(
+            name = "depends_on",
+            joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "dependency_id")
+    )
+    private List<Service> dependencies = new ArrayList<>();
+
     public Service(){}
 
     public Service(String serviceName, String serviceImage, String description) {
@@ -90,6 +98,10 @@ public class Service {
 
     public void addPort(Port port) {
         this.ports.add(port);
+    }
+
+    public void addDependency(Service service) {
+        this.dependencies.add(service);
     }
 
     @Override
