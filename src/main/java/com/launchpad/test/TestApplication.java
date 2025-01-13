@@ -1,16 +1,13 @@
 package com.launchpad.test;
 
-import com.launchpad.test.adapters.ServiceDeploymentAdapter;
 import com.launchpad.test.builders.ContainerServiceBuilder;
 import com.launchpad.test.dao.microservice.MicroserviceDAO;
 import com.launchpad.test.entities.Microservice;
 import com.launchpad.test.entities.Service;
-import com.launchpad.test.entities.Volume;
 import com.launchpad.test.enums.DeploymentServiceEnum;
-import com.launchpad.test.factories.ServiceDeploymentAdapterFactory;
+import com.launchpad.test.factories.ServiceDeploymentDependencyFactory;
 import com.launchpad.test.models.ServiceModel;
 import com.launchpad.test.services.microservice.MicroserviceService;
-import com.launchpad.test.services.up.UpService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -58,8 +55,8 @@ public class TestApplication {
                     .setEnv(List.of("BUDDY=LOL"))
                     .build();
 
-            MicroserviceService microserviceService = ctx.getBean(MicroserviceService.class);
-            microserviceService.setService(DeploymentServiceEnum.DOCKER, microservice);
+            ServiceDeploymentDependencyFactory factory = ctx.getBean(ServiceDeploymentDependencyFactory.class);
+            MicroserviceService microserviceService = factory.getMicroserviceService(DeploymentServiceEnum.DOCKER, microservice);
             Service service = microserviceService.addService(serviceModel);
             Service service2 = microserviceService.addService(serviceModel2);
 

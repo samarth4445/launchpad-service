@@ -6,7 +6,7 @@ import com.launchpad.test.dao.service.ServiceDAO;
 import com.launchpad.test.entities.Microservice;
 import com.launchpad.test.entities.Service;
 import com.launchpad.test.enums.DeploymentServiceEnum;
-import com.launchpad.test.factories.ServiceDeploymentAdapterFactory;
+import com.launchpad.test.factories.ServiceDeploymentDependencyFactory;
 import com.launchpad.test.models.ServiceModel;
 import com.launchpad.test.services.up.UpService;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +35,7 @@ public class MicroserviceService {
 
     public void setService(DeploymentServiceEnum serviceType, Microservice microservice) {
         this.serviceType = serviceType;
-        ServiceDeploymentAdapterFactory factory = new ServiceDeploymentAdapterFactory(applicationContext);
+        ServiceDeploymentDependencyFactory factory = new ServiceDeploymentDependencyFactory(applicationContext);
         this.deploymentAdapter = factory.getServiceDeploymentAdapter(this.serviceType);
         this.microservice = microservice;
     }
