@@ -10,4 +10,5 @@ public interface MicroserviceDAO {
     void save(Microservice microservice);
     void update(Microservice microservice);
     List<Service> getAllServices(int microservice);
+    Microservice getMicroserviceByName(String name);
 }

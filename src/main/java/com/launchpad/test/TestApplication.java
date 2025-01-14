@@ -29,39 +29,6 @@ public class TestApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx, MicroserviceDAO microserviceDAO) {
         return runner -> {
-            ContainerServiceBuilder builder = new ContainerServiceBuilder();
-            Microservice microservice = new Microservice("myMicroservice");
-            microserviceDAO.save(microservice);
-
-            ServiceModel serviceModel = builder.setServiceName("django-app")
-                    .setServiceImage("ubuntu")
-                    .setServiceDescription("ubuntu-linux-x86_64")
-                    .setPrivatePort(8080)
-                    .setPublicPort(8080)
-                    .setVolumeSource("/home/samarth/")
-                    .setVolumeDestination("/home/ubuntu/codes")
-                    .setStatus("")
-                    .setEnv(List.of("BUDDY=LOL"))
-                    .build();
-
-            ServiceModel serviceModel2 = builder.setServiceName("django-app-2")
-                    .setServiceImage("ubuntu")
-                    .setServiceDescription("ubuntu-linux-x86_64")
-                    .setPrivatePort(8080)
-                    .setPublicPort(8080)
-                    .setVolumeSource("/home/samarth/")
-                    .setVolumeDestination("/home/ubuntu/codes")
-                    .setStatus("")
-                    .setEnv(List.of("BUDDY=LOL"))
-                    .build();
-
-            ServiceDeploymentDependencyFactory factory = ctx.getBean(ServiceDeploymentDependencyFactory.class);
-            MicroserviceService microserviceService = factory.getMicroserviceService(DeploymentServiceEnum.DOCKER, microservice);
-            Service service = microserviceService.addService(serviceModel);
-            Service service2 = microserviceService.addService(serviceModel2);
-
-            microserviceService.addServiceDependency(service, service2);
-            microserviceService.serviceUp();
         };
     }
 

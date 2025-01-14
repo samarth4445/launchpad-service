@@ -11,4 +11,5 @@ public interface ServiceDAO {
     Service findServiceWithVolumes(String id);
     List<Service> findByIds(List<String> ids);
     public void delete(Service service);
+    Service findByName(String name);
 }

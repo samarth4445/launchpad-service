@@ -52,4 +52,11 @@ public class ServiceDAOImpl implements ServiceDAO {
     public void delete(Service service) {
         entityManager.remove(service);
     }
+
+    @Override
+    public Service findByName(String name) {
+        return this.entityManager.createQuery("SELECT s FROM Service s WHERE s.serviceName=:name", Service.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 }

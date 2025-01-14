@@ -30,6 +30,14 @@ public class MicroserviceDAOImpl implements MicroserviceDAO {
         return microservice.getServices();
     }
 
+    @Override
+    public Microservice getMicroserviceByName(String name) {
+        return (Microservice) this.entityManager.createQuery("SELECT ms FROM Microservice ms WHERE ms.name=:name")
+                .setParameter("name", name)
+                .getSingleResult();
+
+    }
+
     @Transactional
     @Override
     public void update(Microservice microservice) {
