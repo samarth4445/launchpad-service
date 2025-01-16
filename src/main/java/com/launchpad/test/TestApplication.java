@@ -29,6 +29,7 @@ public class TestApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx, MicroserviceDAO microserviceDAO) {
         return runner -> {
+
         };
     }
 
